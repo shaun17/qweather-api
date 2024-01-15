@@ -9,7 +9,7 @@ setup(
     description='QWeatherPython API',
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
-    url='https://github.com/yourusername/your-package-name',
+    url='https://github.com/shaun17/qweather-api.git',
     install_requires=[
         'requests',
         # Add other dependencies here
