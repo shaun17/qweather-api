@@ -176,6 +176,7 @@ class LocationAirQualityData:
         self.so2 = data.get('so2')
         self.co = data.get('co')
         self.o3 = data.get('o3')
+
 class WeatherData(WeatherDataSup):
     def __init__(self, data):
         super().__init__(data)

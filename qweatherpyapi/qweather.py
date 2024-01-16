@@ -1,8 +1,9 @@
 import logging
 from typing import Union
-from http_request_manager import HttpRequestsManager
-from model import (WeatherData, WeatherSun, WeatherMoon, WeatherAirData, WeatherAirNow, WeatherIndicesData,
-                   WeatherSolaraRaadiationData)
+from qweatherpyapi.http_request_manager import HttpRequestsManager
+from qweatherpyapi.model import (WeatherData, WeatherSun, WeatherMoon, WeatherAirData, WeatherAirNow, WeatherIndicesData,
+                                 WeatherSolaraRaadiationData)
+from qweatherpyapi.geo_model import GeoWeatherData
 
 
 def date_request(url: str, params: dict, **kwargs):
@@ -13,7 +14,6 @@ def date_request(url: str, params: dict, **kwargs):
 
 class QWeatherPy:
     def __url__(self):
-        self.url_geoapi = "https://geoapi.qweather.com/v2/city/"
         if self.api_type == 1:
             domain = 'api'
         elif self.api_type == 0:
@@ -259,3 +259,60 @@ class QWeatherPy:
         if not data:
             return None
         return WeatherSun(data)
+
+
+class GeoWeather:
+    def __url__(self):
+        self.url_geoapi_city = "https://geoapi.qweather.com/v2/city/lookup?"
+        self.url_geoapi_top_city = "https://geoapi.qweather.com/v2/city/top?"
+        self.url_geoapi = "https://geoapi.qweather.com/v2/poi/lookup?"
+        self.url_geoapi_range = "https://geoapi.qweather.com/v2/poi/range?"
+
+    def __init__(self, api_key: str, api_type: Union[int, str] = 0):
+        self.apikey = api_key
+        self.api_type = int(api_type)
+        self.__url__()
+
+    def get_city_lookup(self, location: str, **kwargs):
+        params = {
+            "key": self.apikey,
+            "location": location,
+        }
+        data = date_request(self.url_geoapi_city, params)
+        if not data:
+            return None
+        return GeoWeatherData(data)
+
+    def get_top_city(self, range: str, number: int, **kwargs):
+        params = {
+            "key": self.apikey,
+            "range": range,
+            "number": number,
+        }
+        data = date_request(self.url_geoapi_top_city, params)
+        if not data:
+            return None
+        return GeoWeatherData(data)
+
+    def get_poi_lookup(self, location: str, type: str, **kwargs):
+        params = {
+            "key": self.apikey,
+            "location": location,
+            "type": type,
+        }
+        data = date_request(self.url_geoapi, params)
+        if not data:
+            return None
+        return GeoWeatherData(data)
+
+    def get_poi_range(self, location: str, type: str, radius: str, **kwargs):
+        params = {
+            "key": self.apikey,
+            "location": location,
+            "type": type,
+            "radius": radius,
+        }
+        data = date_request(self.url_geoapi_range, params)
+        if not data:
+            return None
+        return GeoWeatherData(data)

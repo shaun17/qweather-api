@@ -1,9 +1,9 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='qweather-api',
-    version='0.1.2',
-    author='wenren',
+    name='qweatherPyAPI',
+    version='0.1.4',
+    author='shaun',
     author_email='shaun.17g@gmail.com',
     packages=find_packages(),
     description='QWeatherPython API',
